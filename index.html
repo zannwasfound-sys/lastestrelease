@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<!-- 
+  ╔══════════════════════════════════════════════════╗
+  ║         PORTFOLIO WEBSITE - FILE UTAMA           ║
+  ║  File ini adalah kerangka/tulang punggung        ║
+  ║  website. Semua isi halaman ditulis di sini.     ║
+  ╚══════════════════════════════════════════════════╝
+  
+  Cara baca file HTML:
+  - Tag <> adalah "pembungkus" konten
+  - class="..." artinya kita kasih nama ke elemen supaya bisa di-style di CSS
+  - id="..." artinya nama unik (hanya boleh satu per halaman)
+  - data-translate="..." adalah kode yang kita buat sendiri untuk fitur terjemahan
+-->
+<html lang="id">
+<head>
+  <!-- 
+    Bagian <head> adalah pengaturan halaman yang TIDAK terlihat di layar.
+    Di sini kita atur judul tab, font, dan hubungkan ke file CSS.
+  -->
+  <meta charset="UTF-8">
+  <!-- Meta charset = pengaturan karakter, UTF-8 bisa baca huruf Indonesia (é, ñ, dll) -->
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Meta viewport = agar website tampil bagus di HP, tablet, dan laptop -->
+  
+  <title>Personal Web — Andi Muhammad Fauzan A</title>
+  <!-- Favicon — multiple declarations so every browser picks it up -->
+  <link rel="icon" type="image/png" sizes="32x32" href="files/logosigma.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="files/logosigma.png">
+  <link rel="shortcut icon" href="files/logosigma.png">
+  <link rel="apple-touch-icon" href="files/logosigma.png">
+  <!-- Judul ini yang muncul di tab browser -->
+
+  <!-- Google Fonts: Font kustom supaya tulisan lebih keren dari font bawaan -->
+  <!-- Bebas Neue = font besar tegas untuk judul utama -->
+  <!-- Outfit = font bersih untuk teks biasa -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Menghubungkan file CSS kita ke HTML ini -->
+  <!-- Kalau kamu ganti nama file CSS, ubah juga di sini -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-mode">
+  <!--
+    <body> = semua konten yang TERLIHAT di layar
+    class="dark-mode" = website mulai dalam mode gelap (bisa diganti di script.js)
+  -->
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  AUDIO ELEMENT (background music)        ║ -->
+  <!-- ║  Ganti src dengan path file musik kamu:  ║ -->
+  <!-- ║  Contoh: src="files/music.mp3"           ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="files/Vicetone - Nevada (ft. Cozi Zuehlsdorff).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  CINEMATIC ENTRY OVERLAY                 ║ -->
+  <!-- ║  Muncul saat pertama kali buka website.  ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="entry-overlay" id="entryOverlay">
+    <canvas id="entryCanvas"></canvas>
+    <!-- Decorative ambient lines -->
+    <div class="entry-content">
+      <div class="entry-greeting-wrap">
+        <span class="entry-greeting-time" id="entryGreetingTime">🌙</span>
+        <span class="entry-greeting-text" id="entryGreetingText">Selamat Malam</span>
+      </div>
+      <div class="entry-tag">// selamat datang</div>
+      <h1 class="entry-title">
+        <span class="entry-bracket">&lt;</span>Zan's<span class="entry-dot">.</span>PW<span class="entry-bracket">/&gt;</span>
+      </h1>
+      <p class="entry-sub" id="entrySubText">Personal Web — Andi Muhammad Fauzan A</p>
+
+      <div class="entry-music-preview">
+        <div class="entry-music-waves" id="entryMusicWaves">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <span class="entry-music-label" id="entryMusicLabel">Musik latar tersedia</span>
+      </div>
+
+      <div class="entry-buttons">
+        <button class="entry-btn entry-btn-music" id="enterWithMusic" onclick="enterSite(true)">
+          <span class="entry-btn-icon">🎵</span>
+          <span>Masuk dengan Musik</span>
+        </button>
+        <button class="entry-btn entry-btn-silent" id="enterSilent" onclick="enterSite(false)">
+          <span>Masuk tanpa Musik</span>
+        </button>
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  GREETING CARD + SPLIT REVEAL SEQUENCE  ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <!--
+    Two halves stacked on top of each other, each clipped to
+    their half of the screen. They show an IDENTICAL copy of
+    the content. On split, top slides up / bottom slides down —
+    the text physically tears apart in the middle.
+  -->
+  <div class="greet-card" id="greetCard">
+
+    <!-- TOP HALF — clipped to upper 50% of viewport -->
+    <div class="gc-half gc-half-top" id="gcHalfTop">
+      <div class="gc-half-inner">
+        <div class="gc-time-chip">
+          <span class="gc-chip-icon" id="gcChipIconA">🌙</span>
+          <span class="gc-chip-text" id="gcChipTextA">Selamat Malam</span>
+        </div>
+        <h1 class="gc-greeting" id="gcGreetingA">SELAMAT MALAM</h1>
+        <div class="gc-divider"></div>
+        <blockquote class="gc-quote">
+          <span class="gc-quote-mark">"</span>
+          <span class="gc-quote-text" id="gcQuoteTextA"></span>
+          <span class="gc-quote-mark">"</span>
+        </blockquote>
+        <p class="gc-quote-author" id="gcQuoteAuthorA"></p>
+        <p class="gc-tagline" id="gcTaglineA">Yuk, eksplor sebentar...</p>
+      </div>
+    </div>
+
+    <!-- BOTTOM HALF — clipped to lower 50% of viewport -->
+    <div class="gc-half gc-half-bottom" id="gcHalfBottom">
+      <div class="gc-half-inner">
+        <div class="gc-time-chip">
+          <span class="gc-chip-icon" id="gcChipIconB">🌙</span>
+          <span class="gc-chip-text" id="gcChipTextB">Selamat Malam</span>
+        </div>
+        <h1 class="gc-greeting" id="gcGreetingB">SELAMAT MALAM</h1>
+        <div class="gc-divider"></div>
+        <blockquote class="gc-quote">
+          <span class="gc-quote-mark">"</span>
+          <span class="gc-quote-text" id="gcQuoteTextB"></span>
+          <span class="gc-quote-mark">"</span>
+        </blockquote>
+        <p class="gc-quote-author" id="gcQuoteAuthorB"></p>
+        <p class="gc-tagline" id="gcTaglineB">Yuk, eksplor sebentar...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  MODE / LANGUAGE TRANSITION OVERLAY     ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="switch-transition-overlay" id="switchTransitionOverlay">
+    <div class="switch-transition-blur" id="switchTransitionBlur"></div>
+    <!-- Flag wipe: dua stripe bendera -->
+    <div class="flag-wipe-panel" id="flagWipePanel">
+      <div class="flag-stripe flag-stripe-top" id="flagStripeTop"></div>
+      <div class="flag-stripe flag-stripe-bottom" id="flagStripeBottom"></div>
+      <div class="flag-wipe-label-wrap">
+        <span class="switch-transition-label" id="switchTransitionLabel">DARK MODE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║     CANVAS PARTIKEL          ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <!-- Canvas adalah "kanvas digital" tempat JavaScript menggambar partikel mengambang -->
+  <!-- Jangan hapus ini, kalau dihapus partikelnya hilang! -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  CUSTOM CURSOR + TRAIL          ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  ACHIEVEMENT TOAST              ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  CLICK PARTICLE CANVAS          ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <canvas class="click-canvas" id="clickCanvas"></canvas>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║  SKILL TOOLTIP                  ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <div class="skill-tooltip" id="skillTooltip">
+    <span class="skill-tooltip-label" id="skillTooltipLabel"></span>
+    <span class="skill-tooltip-text" id="skillTooltipText"></span>
+    <div class="skill-tooltip-arrow"></div>
+  </div>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║       NAVIGASI (NAVBAR)      ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <nav class="navbar" id="navbar">
+    <!-- Logo / nama singkat di pojok kiri navbar -->
+    <div class="nav-logo">
+      <span class="logo-bracket">&lt;</span>
+      <span class="logo-name">Zan's<span class="logo-dot">.</span>PW</span>
+      <span class="logo-bracket">/&gt;</span>
+    </div>
+
+    <!-- Menu navigasi (daftar link ke tiap section) -->
+    <ul class="nav-links" id="navLinks">
+      <!-- href="#hero" artinya klik link ini = lompat ke section dengan id="hero" -->
+      <li><a href="#hero" class="nav-link" data-translate="nav_home">Beranda</a></li>
+      <li><a href="#about" class="nav-link" data-translate="nav_about">Tentang</a></li>
+      <li><a href="#experience" class="nav-link" data-translate="nav_exp">Pengalaman</a></li>
+      <li><a href="#skills" class="nav-link" data-translate="skills_tag_nav">Skills</a></li>
+      <li><a href="#certificates" class="nav-link" data-translate="nav_cert">Sertifikat</a></li>
+      <li><a href="#video" class="nav-link" data-translate="nav_video">Video</a></li>
+      <li><a href="#music" class="nav-link" data-translate="nav_music">Musik</a></li>
+      <li><a href="#gaming" class="nav-link" data-translate="nav_gaming">Gaming</a></li>
+      <li><a href="#peripheral" class="nav-link" data-translate="nav_peripheral">Setup</a></li>
+      <li><a href="#contact" class="nav-link" data-translate="nav_contact">Kontak</a></li>
+      <li><a href="#quiz" class="nav-link" data-translate="nav_quiz">Quiz</a></li>
+      <li><a href="#meme" class="nav-link" data-translate="nav_meme">Meme</a></li>
+      <li><a href="#bulletin" class="nav-link" data-translate="nav_bulletin">Pesan</a></li>
+      <!-- Mobile only: language & theme controls di bawah menu -->
+      <li class="nav-mobile-controls">
+        <span class="nav-mobile-controls-label">Tampilan</span>
+        <div class="nav-mobile-controls-btns">
+          <!-- Tombol bahasa -->
+          <button class="btn-lang" id="langToggleMobile" onclick="toggleLanguage()" style="display:flex">
+            <span id="langLabelMobile" class="lang-badge lang-id">
+              <span class="lang-flag-strip lang-flag-id"></span>
+              <span class="lang-code">ID</span>
+            </span>
+          </button>
+          <!-- Tombol tema -->
+          <button class="btn-theme" id="themeToggleMobile" onclick="toggleTheme()" style="display:flex">
+            <span class="icon-sun">☀️</span>
+            <span class="icon-moon">🌙</span>
+          </button>
+        </div>
+      </li>
+    </ul>
+
+    <!-- Tombol-tombol di pojok kanan navbar -->
+    <div class="nav-controls">
+      <!-- Tombol ganti bahasa (Indonesia / English) -->
+      <!-- onclick="toggleLanguage()" = panggil fungsi di script.js saat diklik -->
+      <button class="btn-lang" id="langToggle" onclick="toggleLanguage()">
+        <span id="langLabel" class="lang-badge lang-id">
+          <span class="lang-flag-strip lang-flag-id"></span>
+          <span class="lang-code">ID</span>
+        </span>
+      </button>
+
+      <!-- Tombol musik (play / pause background music) -->
+      <button class="btn-music" id="musicToggle" onclick="toggleMusic()" title="Toggle musik">
+        <span class="icon-music-on">🎵</span>
+        <span class="icon-music-off">🔇</span>
+        <div class="music-bars" id="musicBars">
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+
+      <!-- Tombol ganti tema (gelap / terang) -->
+      <button class="btn-theme" id="themeToggle" onclick="toggleTheme()">
+        <!-- Ikon matahari dan bulan, yang aktif yang keliatan -->
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon">🌙</span>
+      </button>
+
+      <!-- Dev online status indicator -->
+      <div class="dev-nav-status" id="devNavStatus" style="display:none">
+        <span class="dev-nav-dot" id="devNavDot"></span>
+        <span class="dev-nav-label" id="devNavLabel">Developer Offline</span>
+      </div>
+
+      <!-- Online users widget di navbar -->
+      <div class="online-widget" id="onlineWidget">
+        <button class="online-widget-toggle" id="onlineWidgetToggle">
+          <span class="online-widget-dot"></span>
+          <span class="online-widget-count" id="onlineWidgetCount">0</span>
+        </button>
+        <div class="online-widget-panel" id="onlineWidgetPanel">
+          <div class="online-widget-header">
+            <span class="online-widget-title" id="onlineWidgetTitle">🟢 Online Sekarang</span>
+          </div>
+          <div class="online-widget-list" id="onlineWidgetList"></div>
+        </div>
+      </div>
+
+      <!-- Tombol hamburger untuk HP (3 garis) -->
+      <!-- onclick="toggleMobileMenu()" = buka/tutup menu di layar kecil -->
+      <button class="btn-hamburger" id="hamburger" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║       HERO SECTION           ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <!-- Section pertama yang langsung terlihat saat buka website -->
+  <section class="hero" id="hero">
+    <div class="hero-container">
+
+      <!-- Kolom kiri: foto + teks perkenalan -->
+      <div class="hero-left">
+
+        <!-- Slot foto profil - ganti src="" dengan path foto kamu -->
+        <!-- Contoh: src="foto-saya.jpg" kalau fotonya satu folder dengan index.html -->
+        <div class="hero-photo-wrapper">
+          <div class="photo-flip-scene" id="photoFlipScene">
+            <!-- Dotted ring lives here so it scales with the photo on beat -->
+            <div class="photo-dotted-ring"></div>
+            <div class="photo-flip-card" id="photoFlipCard">
+
+              <!-- DEPAN: Foto profil -->
+              <div class="photo-face photo-front">
+                <img src="files/foto-polaroid.jpeg" alt="Foto Profil" class="hero-photo-img">
+              </div>
+
+              <!-- BELAKANG: GIF -->
+              <div class="photo-face photo-back">
+                <img
+                  class="photo-back-gif"
+                  src="files/mahiru.gif"
+                  alt=""
+                  id="profileGif">
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Nama & status di bawah foto -->
+        <div class="hero-identity">
+          <!-- GANTI NAMA: ubah teks "Nama Kamu" dengan nama aslimu -->
+          <h1 class="hero-name">ANDI MUH FAUZAN</h1>
+          <div class="hero-badge">
+            <span class="badge-dot"></span>
+            <span data-translate="hero_status">Mahasiswa Teknik Informatika</span>
+          </div>
+          <!-- Tagline singkat buat perkenalan -->
+          <p class="hero-tagline" data-translate="hero_tagline">
+            Masih belajar, tapi semangat nggak pernah berhenti! 🚀
+          </p>
+
+          <!-- Tombol CTA (Call to Action) -->
+          <div class="hero-cta">
+            <a href="#about" class="btn-primary" data-translate="hero_btn_about">Kenalan Yuk</a>
+            <a href="#contact" class="btn-secondary" data-translate="hero_btn_contact">HI</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kolom kanan: kartu foto yang bisa didrag dengan tali -->
+      <div class="hero-right">
+        <!-- 
+          KARTU TALI (ROPE CARD)
+          Ini kartu Polaroid yang bisa kamu tarik-tarik seperti ada tali di atasnya!
+          Canvas dipakai untuk menggambar tali. Kartu bisa di-drag pakai mouse/jari.
+        -->
+        <div class="rope-section" id="ropeSection">
+          <!-- Canvas untuk gambar tali - JavaScript yang handle ini -->
+          <canvas id="ropeCanvas"></canvas>
+
+          <!-- Kartu Polaroid yang bisa di-drag -->
+          <!-- 
+            CARA GANTI FOTO DI KARTU:
+            Ganti src="foto-kamu.jpg" di bawah
+          -->
+          <div class="polaroid-card" id="polaroidCard">
+            <div class="polaroid-photo">
+              <!-- Placeholder di dalam kartu Polaroid -->
+              <img src="files/mahiru.jpg" class="polaroid-img" alt="">
+              <!--
+                Atau pakai foto asli (hapus div di atas, uncomment ini):
+                <img src="foto-kamu.jpg" alt="Foto" class="polaroid-img">
+              -->
+            </div>
+            <!-- Caption di bawah kartu Polaroid -->
+            <p class="polaroid-caption" data-translate="polaroid_caption">Ini Aku! 👋</p>
+          </div>
+        </div>
+
+        <!-- Info tambahan yang "mengambang" di sekitar kartu -->
+        <div class="floating-badge badge-1">
+          <span>🎓</span>
+          <small data-translate="badge_student">Informatika 2024</small>
+        </div>
+        <div class="floating-badge badge-2">
+          <span>💻</span>
+          <small data-translate="badge_code">HTML · CSS · JS</small>
+        </div>
+        <div class="floating-badge badge-3">
+          <span>🤖</span>
+          <small data-translate="badge_ai">AI Explorer</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panah scroll ke bawah -->
+    <div class="scroll-indicator">
+      <span data-translate="scroll_down">Scroll ke bawah</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║       ABOUT SECTION          ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="about" id="about">
+    <div class="container">
+      <!-- Judul section dengan garis dekorasi -->
+      <div class="section-header">
+        <span class="section-tag" data-translate="about_tag">// tentang_saya</span>
+        <h2 class="section-title" data-translate="about_title">Siapa Aku?</h2>
+      </div>
+
+      <div class="about-grid">
+        <!-- Teks deskripsi diri -->
+        <div class="about-text">
+          <p data-translate="about_p1">
+            Halo! Aku mahasiswa Teknik Informatika semester 2 yang lagi seru-serunya eksplor dunia digital. 
+            Belum jadi expert, tapi setiap hari belajar sesuatu yang baru — dan itu yang bikin aku semangat!
+          </p>
+          <p data-translate="about_p2">
+            Website ini bukan portofolio pro yang penuh klien dan projek besar. Ini lebih kayak "buku harian digital" 
+            yang nunjukkin perjalanan belajarku — dari nge-edit video, ngulik AI, sampai nyoba bikin website pertamaku.
+          </p>
+          <p data-translate="about_p3">
+            Masih banyak yang mau dipelajari, tapi yang penting mulai dulu, kan? 😄
+          </p>
+        </div>
+
+        <!-- Kartu fakta singkat -->
+        <div class="about-facts">
+          <div class="fact-card">
+            <span class="fact-icon">🏫</span>
+            <div>
+              <strong data-translate="fact_status">Status</strong>
+              <p data-translate="fact_status_val">Mahasiswa Aktif · Sem. 2</p>
+            </div>
+          </div>
+          <div class="fact-card">
+            <span class="fact-icon">📍</span>
+            <div>
+              <strong data-translate="fact_major">Jurusan</strong>
+              <p data-translate="fact_major_val">Teknik Informatika</p>
+            </div>
+          </div>
+          <div class="fact-card">
+            <span class="fact-icon">⚡</span>
+            <div>
+              <strong data-translate="fact_focus">Fokus</strong>
+              <p data-translate="fact_focus_val">Kreatif Digital & AI</p>
+            </div>
+          </div>
+          <div class="fact-card">
+            <span class="fact-icon">🎯</span>
+            <div>
+              <strong data-translate="fact_goal">Tujuan</strong>
+              <p data-translate="fact_goal_val">Jadi Freelancer Suatu Hari</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║     EXPERIENCE SECTION       ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="experience" id="experience">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="exp_tag">// pengalaman</span>
+        <h2 class="section-title" data-translate="exp_title">Yang Udah Aku Kuasai</h2>
+        <p class="section-sub" data-translate="exp_sub">Bukan expert, tapi udah cukup tau gimana cara kerjanya 😄</p>
+      </div>
+
+      <!-- Grid kartu pengalaman -->
+      <!-- Ada 4 kartu sesuai permintaan: Video Editor, Photo Editor, AI, dan HTML/CSS/JS -->
+      <div class="exp-grid">
+
+        <!-- KARTU 1: Video Editor -->
+        <div class="exp-card" data-delay="0">
+          <div class="exp-card-inner">
+            <div class="exp-icon-wrap">
+              <span class="exp-icon">🎬</span>
+            </div>
+            <h3 class="exp-title" data-translate="exp1_title">Video Editor</h3>
+            <!-- Garis tahun pengalaman -->
+            <div class="exp-years">
+              <span class="year-badge">2020 — <span data-translate="now">sekarang</span></span>
+            </div>
+            <p class="exp-desc" data-translate="exp1_desc">
+              Udah main CapCut sejak 2020, versi mobile maupun desktop. 
+              Dari yang cuma potong-potong video, sekarang udah bisa bikin konten yang lumayan enak dilihat. 
+              Transisi, teks animasi, efek — siapa takut!
+            </p>
+            <!-- Skill tag -->
+            <div class="exp-tags">
+              <span class="tag" data-tip="✂️ Video editor mobile andalan. Ringan, powerful, banyak fitur gratis." data-tip-label="Video Editing">CapCut Mobile</span>
+              <span class="tag" data-tip="🖥️ Versi desktop CapCut — timeline lebih luas, hasil lebih presisi." data-tip-label="Video Editing">CapCut Desktop</span>
+              <span class="tag" data-tip="✨ Raja efek keyframe di mobile. Animasi halus & transisi keren." data-tip-label="Motion Graphics">Alight Motion</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KARTU 2: Photo Editor -->
+        <div class="exp-card" data-delay="100">
+          <div class="exp-card-inner">
+            <div class="exp-icon-wrap">
+              <span class="exp-icon">🖼️</span>
+            </div>
+            <h3 class="exp-title" data-translate="exp2_title">Photo Editor</h3>
+            <div class="exp-years">
+              <span class="year-badge" data-translate="exp2_years">Beberapa Tahun</span>
+            </div>
+            <p class="exp-desc" data-translate="exp2_desc">
+              Dari Pixellab buat desain grafis, Canva buat poster & presentasi, 
+              Google Seed buat eksplorasi, sampai Photoshop Mobile buat hasil yang lebih pro. 
+              Banyak tools, makin banyak kreasi!
+            </p>
+            <div class="exp-tags">
+              <span class="tag" data-tip="🎨 Desain grafis mobile — typography, poster, quotes. Simpel tapi powerful." data-tip-label="Desain Grafis">Pixellab</span>
+              <span class="tag" data-tip="📐 Template siap pakai untuk presentasi, poster, dan konten sosmed." data-tip-label="Desain & Presentasi">Canva</span>
+              <span class="tag" data-tip="🌱 Tools eksplorasi dari Google — seru buat coba-coba ide kreatif." data-tip-label="Eksplorasi">Google Seed</span>
+              <span class="tag" data-tip="📸 Editing foto level pro langsung dari HP. Masking, layer, dan lainnya." data-tip-label="Photo Editing">Photoshop Mobile</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KARTU 3: AI Enthusiast -->
+        <div class="exp-card" data-delay="200">
+          <div class="exp-card-inner">
+            <div class="exp-icon-wrap">
+              <span class="exp-icon">🤖</span>
+            </div>
+            <h3 class="exp-title" data-translate="exp3_title">AI Enthusiast</h3>
+            <div class="exp-years">
+              <span class="year-badge">2024 — <span data-translate="now">sekarang</span></span>
+            </div>
+            <p class="exp-desc" data-translate="exp3_desc">
+              Sejak 2024 aktif eksplor berbagai tools AI. Suka banget cari-cari prompt yang unik dan 
+              menarik — kadang hasilnya diluar ekspektasi banget! Masih terus eksplor sampai sekarang 
+              karena AI berkembang super cepet.
+            </p>
+            <div class="exp-tags">
+              <span class="tag" data-tip="🧠 Seni nulis prompt yang tepat buat dapetin output AI yang maksimal." data-tip-label="AI Skill">Prompt Engineering</span>
+              <span class="tag" data-tip="🤖 Eksplorasi berbagai tools AI — dari chatbot sampai automation." data-tip-label="AI Tools">AI Tools</span>
+              <span class="tag" data-tip="🖼️ Generate gambar dari teks menggunakan AI. Hasilnya sering bikin takjub!" data-tip-label="Generative AI">Image Gen</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KARTU 4: HTML/CSS/JS -->
+        <div class="exp-card" data-delay="300">
+          <div class="exp-card-inner">
+            <div class="exp-icon-wrap">
+              <span class="exp-icon">💻</span>
+            </div>
+            <h3 class="exp-title" data-translate="exp4_title">Web Development</h3>
+            <div class="exp-years">
+              <span class="year-badge" data-translate="exp4_years">~1 Tahun Belajar</span>
+            </div>
+            <p class="exp-desc" data-translate="exp4_desc">
+              Masih dalam tahap belajar tapi udah lumayan ngerti konsep dasarnya. 
+              HTML buat struktur, CSS buat tampilan, JavaScript buat yang interaktif. 
+              Masih banyak yang belum dikuasai — termasuk JavaScript yang masih sering bikin garuk kepala 😅
+            </p>
+            <div class="exp-tags">
+              <span class="tag" data-tip="🏗️ Tulang punggung semua halaman web. Struktur & konten dimulai dari sini." data-tip-label="Web Dev">HTML</span>
+              <span class="tag" data-tip="🎨 Tampilan, warna, animasi — CSS yang bikin website jadi cantik." data-tip-label="Web Dev">CSS</span>
+              <span class="tag" data-tip="⚡ Logika & interaktivitas halaman. Masih belajar tapi makin seru!" data-tip-label="Web Dev">JavaScript (Basic)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║    SKILLS PROGRESS SECTION   ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="skills-progress" id="skills">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="skills_tag">// skill_level</span>
+        <h2 class="section-title" data-translate="skills_title">Seberapa Jauh?</h2>
+        <p class="section-sub" data-translate="skills_sub">Progress belajarku sampai sekarang 📊</p>
+      </div>
+
+      <div class="skills-grid">
+
+        <!-- Category: Web Dev -->
+        <div class="skill-category">
+          <div class="skill-cat-label">
+            <span class="skill-cat-icon">💻</span>
+            <span data-translate="skill_cat_web">Web Development</span>
+          </div>
+
+          <div class="skill-item" data-pct="60">
+            <div class="skill-top-row">
+              <div class="skill-name-wrap">
+                <span class="skill-badge skill-badge-html">HTML</span>
+                <span class="skill-name" data-translate="skill_name_html">HyperText Markup Language</span>
+              </div>
+              <span class="skill-pct-label">60%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill skill-fill-html" style="--target-width: 60%"></div>
+              <div class="skill-bar-glow"></div>
+            </div>
+            <span class="skill-level-tag" data-translate="skill_level_html">Intermediate</span>
+          </div>
+
+          <div class="skill-item" data-pct="40">
+            <div class="skill-top-row">
+              <div class="skill-name-wrap">
+                <span class="skill-badge skill-badge-css">CSS</span>
+                <span class="skill-name" data-translate="skill_name_css">Cascading Style Sheets</span>
+              </div>
+              <span class="skill-pct-label">40%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill skill-fill-css" style="--target-width: 40%"></div>
+              <div class="skill-bar-glow"></div>
+            </div>
+            <span class="skill-level-tag" data-translate="skill_level_css">Basic+</span>
+          </div>
+
+          <div class="skill-item" data-pct="20">
+            <div class="skill-top-row">
+              <div class="skill-name-wrap">
+                <span class="skill-badge skill-badge-js">JS</span>
+                <span class="skill-name" data-translate="skill_name_js">JavaScript</span>
+              </div>
+              <span class="skill-pct-label">20%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill skill-fill-js" style="--target-width: 20%"></div>
+              <div class="skill-bar-glow"></div>
+            </div>
+            <span class="skill-level-tag" data-translate="skill_level_js">Pemula</span>
+          </div>
+        </div>
+
+        <!-- Category: Creative -->
+        <div class="skill-category">
+          <div class="skill-cat-label">
+            <span class="skill-cat-icon">🎨</span>
+            <span data-translate="skill_cat_creative">Creative & Digital</span>
+          </div>
+
+          <div class="skill-item" data-pct="80">
+            <div class="skill-top-row">
+              <div class="skill-name-wrap">
+                <span class="skill-badge skill-badge-video">VID</span>
+                <span class="skill-name" data-translate="skill_name_video">Editing Video</span>
+              </div>
+              <span class="skill-pct-label">80%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill skill-fill-video" style="--target-width: 80%"></div>
+              <div class="skill-bar-glow"></div>
+            </div>
+            <span class="skill-level-tag" data-translate="skill_level_video">Advanced</span>
+          </div>
+
+          <div class="skill-item" data-pct="75">
+            <div class="skill-top-row">
+              <div class="skill-name-wrap">
+                <span class="skill-badge skill-badge-photo">IMG</span>
+                <span class="skill-name" data-translate="skill_name_photo">Editing Photo</span>
+              </div>
+              <span class="skill-pct-label">75%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill skill-fill-photo" style="--target-width: 75%"></div>
+              <div class="skill-bar-glow"></div>
+            </div>
+            <span class="skill-level-tag" data-translate="skill_level_photo">Advanced</span>
+          </div>
+
+          <div class="skill-item" data-pct="80">
+            <div class="skill-top-row">
+              <div class="skill-name-wrap">
+                <span class="skill-badge skill-badge-ai">AI</span>
+                <span class="skill-name" data-translate="skill_name_ai">AI Prompter</span>
+              </div>
+              <span class="skill-pct-label">80%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill skill-fill-ai" style="--target-width: 80%"></div>
+              <div class="skill-bar-glow"></div>
+            </div>
+            <span class="skill-level-tag" data-translate="skill_level_ai">Advanced</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║    CERTIFICATES SECTION      ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <!-- 
+    Kartu sertifikat 3D yang bisa di-flip (dibalik)!
+    Klik kartu = kartu berputar = tampil deskripsi di belakang.
+    Ada 3 slot sesuai permintaan.
+  -->
+  <section class="certificates" id="certificates">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="cert_tag">// sertifikat</span>
+        <h2 class="section-title" data-translate="cert_title">Sertifikat & Pencapaian</h2>
+        <p class="section-sub" data-translate="cert_sub">Klik kartunya buat lihat detailnya! 🃏</p>
+      </div>
+
+      <div class="cert-grid">
+
+        <!-- ═══ SERTIFIKAT 1 ═══ -->
+        <div class="cert-container" onclick="flipCard(this)">
+          <div class="cert-card">
+            <!-- DEPAN: foto sertifikat -->
+            <div class="cert-front">
+              <img src="files/sertif1.jpeg" alt="Sertifikat Seminar UNIKOM-KPI" class="cert-img">
+              <div class="cert-front-info">
+                <h3 class="cert-name" data-translate="cert1_name">Seminar Nasional UNIKOM × KPI</h3>
+                <p class="cert-issuer" data-translate="cert1_issuer">Direktorat Kemahasiswaan UNIKOM</p>
+                <span class="cert-flip-hint" data-translate="cert_flip">Klik untuk detail ↩</span>
+              </div>
+            </div>
+            <!-- BELAKANG: deskripsi -->
+            <div class="cert-back">
+              <div class="cert-back-content">
+                <span class="cert-back-icon">🏛️</span>
+                <h3 data-translate="cert1_name">Seminar Nasional UNIKOM × KPI</h3>
+                <div class="cert-date">
+                  <span>📅</span>
+                  <span data-translate="cert1_date">7 November 2025</span>
+                </div>
+                <p data-translate="cert1_desc">Peserta Seminar Nasional Kerja Sama Direktorat Kemahasiswaan UNIKOM dan Komisi Penyiaran Indonesia (KPI) Pusat dengan tema "Konten Penyiaran Vs Konten Media Baru Bagi Gen Z".</p>
+                <div class="cert-issuer-back">
+                  <span>🏢</span>
+                  <span data-translate="cert1_issuer">Direktorat Kemahasiswaan UNIKOM</span>
+                </div>
+                <span class="cert-flip-hint" data-translate="cert_back">Kembali ↩</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ SERTIFIKAT 2 ═══ -->
+        <div class="cert-container" onclick="flipCard(this)">
+          <div class="cert-card">
+            <div class="cert-front">
+              <img src="files/sertif2.jpeg" alt="Sertifikat ISSVT #9 Cyber Security" class="cert-img">
+              <div class="cert-front-info">
+                <h3 class="cert-name" data-translate="cert2_name">ISSVT #9 — Cyber Security</h3>
+                <p class="cert-issuer" data-translate="cert2_issuer">CV. Semiotika × IOU The Gambia</p>
+                <span class="cert-flip-hint" data-translate="cert_flip">Klik untuk detail ↩</span>
+              </div>
+            </div>
+            <div class="cert-back">
+              <div class="cert-back-content">
+                <span class="cert-back-icon">🔐</span>
+                <h3 data-translate="cert2_name">ISSVT #9 — Cyber Security</h3>
+                <div class="cert-date">
+                  <span>📅</span>
+                  <span data-translate="cert2_date">2 Oktober 2025</span>
+                </div>
+                <p data-translate="cert2_desc">Peserta Semiotika International Scientific Virtual Talk #9 bertema "Cyber Security" — kolaborasi India-Indonesia yang diselenggarakan oleh CV. Semiotika bersama International Open University, The Gambia.</p>
+                <div class="cert-issuer-back">
+                  <span>🏢</span>
+                  <span data-translate="cert2_issuer">CV. Semiotika × IOU The Gambia</span>
+                </div>
+                <span class="cert-flip-hint" data-translate="cert_back">Kembali ↩</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ SERTIFIKAT 3 ═══ -->
+        <div class="cert-container" onclick="flipCard(this)">
+          <div class="cert-card">
+            <div class="cert-front">
+              <img src="files/sertif3.jpeg" alt="Sertifikat ISSVT #10 AI Research" class="cert-img">
+              <div class="cert-front-info">
+                <h3 class="cert-name" data-translate="cert3_name">ISSVT #10 — AI Research</h3>
+                <p class="cert-issuer" data-translate="cert3_issuer">CV. Semiotika × Pakistan</p>
+                <span class="cert-flip-hint" data-translate="cert_flip">Klik untuk detail ↩</span>
+              </div>
+            </div>
+            <div class="cert-back">
+              <div class="cert-back-content">
+                <span class="cert-back-icon">🤖</span>
+                <h3 data-translate="cert3_name">ISSVT #10 — AI Research</h3>
+                <div class="cert-date">
+                  <span>📅</span>
+                  <span data-translate="cert3_date">14 Oktober 2025</span>
+                </div>
+                <p data-translate="cert3_desc">Peserta Semiotika International Scientific Virtual Talk #10 bertema "AI-Based Research for Student Journal Publication" — kolaborasi Indonesia-Pakistan bersama Local Government Rural Development Pakistan.</p>
+                <div class="cert-issuer-back">
+                  <span>🏢</span>
+                  <span data-translate="cert3_issuer">CV. Semiotika × Pakistan</span>
+                </div>
+                <span class="cert-flip-hint" data-translate="cert_back">Kembali ↩</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║       VIDEO SECTION          ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="video-intro" id="video">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="video_tag">// video_perkenalan</span>
+        <h2 class="section-title" data-translate="video_title">Video Perkenalan</h2>
+        <p class="section-sub" data-translate="video_sub">Lebih kenal aku lewat video ini 🎬</p>
+      </div>
+
+      <div class="video-wrapper">
+
+        <!-- Slot video 9:16 -->
+        <div class="video-slot-wrap">
+          <div class="video-slot" id="videoSlot">
+            <!-- 
+              CARA PASANG VIDEO:
+              Ganti src="" dengan path file video kamu
+              Contoh: src="files/perkenalan.mp4"
+            -->
+            <video
+              id="introVideo"
+              preload="metadata"
+              playsinline
+              src="files/intro.mp4"
+            ></video>
+
+            <!-- Placeholder / Upload Area -->
+            <div class="video-placeholder" id="videoPlaceholder">
+              <!-- Hidden file input -->
+              <input
+                type="file"
+                id="videoFileInput"
+                accept="video/*"
+                style="display:none"
+                onchange="handleVideoUpload(event)"
+              >
+              <!-- Drop zone (klik atau drag & drop) -->
+              <div class="video-upload-zone" id="videoUploadZone" onclick="document.getElementById('videoFileInput').click()">
+                <div class="video-upload-icon">🎬</div>
+                <p class="video-upload-title">Upload Video Perkenalan</p>
+                <p class="video-upload-hint">Klik untuk pilih file, atau drag & drop di sini</p>
+                <span class="video-upload-badge">MP4 · MOV · WebM</span>
+              </div>
+            </div>
+
+            <!-- Big play button overlay -->
+            <div class="video-big-play" id="videoBigPlay">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+
+            <!-- Ganti video button (muncul setelah video diload) -->
+            <button class="video-change-btn" id="videoChangeBtn" onclick="document.getElementById('videoFileInput').click()">
+              🔄 Ganti Video
+            </button>
+          </div>
+
+          <!-- Custom Media Player -->
+          <div class="video-player-bar" id="videoPlayerBar">
+
+            <!-- Progress bar -->
+            <div class="vp-progress-wrap" id="vpProgressWrap">
+              <div class="vp-progress-bar" id="vpProgressBar">
+                <div class="vp-progress-fill" id="vpProgressFill"></div>
+                <div class="vp-progress-thumb" id="vpProgressThumb"></div>
+              </div>
+              <div class="vp-time-row">
+                <span class="vp-time" id="vpCurrentTime">0:00</span>
+                <span class="vp-time" id="vpDuration">0:00</span>
+              </div>
+            </div>
+
+            <!-- Controls row -->
+            <div class="vp-controls">
+              <!-- Backward 10s -->
+              <button class="vp-btn vp-btn-skip" id="vpBackward" title="Mundur 10 detik" onclick="videoSkip(-10)">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+                  <text x="12" y="14" text-anchor="middle" font-size="5" font-family="Outfit,sans-serif" font-weight="700" fill="currentColor">10</text>
+                </svg>
+              </button>
+
+              <!-- Play / Pause -->
+              <button class="vp-btn vp-btn-main" id="vpPlayBtn" title="Play / Pause" onclick="videoTogglePlay()">
+                <svg class="vp-icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="vp-icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+
+              <!-- Forward 10s -->
+              <button class="vp-btn vp-btn-skip" id="vpForward" title="Maju 10 detik" onclick="videoSkip(10)">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 5V2l4 4-4 4V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/>
+                  <text x="12" y="14" text-anchor="middle" font-size="5" font-family="Outfit,sans-serif" font-weight="700" fill="currentColor">10</text>
+                </svg>
+              </button>
+
+              <!-- Volume Control -->
+              <div class="vp-vol-group" id="vpVolGroup">
+                <button class="vp-btn vp-btn-vol" id="vpVolBtn" title="Mute/Unmute" onclick="videoVolBtnClick()">
+                  <svg class="vp-icon-vol vp-icon-vol-high" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z"/></svg>
+                  <svg class="vp-icon-vol vp-icon-vol-low" viewBox="0 0 24 24" fill="currentColor"><path d="M18.5 12A4.5 4.5 0 0 0 16 7.97v8.05A4.5 4.5 0 0 0 18.5 12zM5 9v6h4l5 5V4L9 9H5z"/></svg>
+                  <svg class="vp-icon-mute" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45A4.47 4.47 0 0 0 16.5 12zm2.5 0A7 7 0 0 1 18.18 15.18l1.5 1.5A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23v2.06A7 7 0 0 1 19 12zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25A6.98 6.98 0 0 1 14 20.94v2.06A9 9 0 0 0 18.22 19.22L19.73 20.73 21 19.46 4.27 3zM12 4 9.91 6.09 12 8.18V4z"/></svg>
+                </button>
+                <!-- Desktop: horizontal inline slider -->
+                <div class="vp-vol-slider-wrap" id="vpVolSliderWrap">
+                  <div class="vp-vol-track" id="vpVolTrack">
+                    <div class="vp-vol-fill" id="vpVolFill"></div>
+                    <div class="vp-vol-thumb" id="vpVolThumb"></div>
+                  </div>
+                  <span class="vp-vol-pct" id="vpVolPct">100%</span>
+                </div>
+              </div>
+
+              <!-- Fullscreen -->
+              <button class="vp-btn vp-btn-fs" id="vpFsBtn" title="Layar penuh" onclick="videoToggleFullscreen()">
+                <svg class="vp-icon-expand" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                <svg class="vp-icon-compress" viewBox="0 0 24 24" fill="currentColor"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║    FAVORITE MUSIC SECTION    ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="fav-music" id="music">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="music_tag">// musik_favorit</span>
+        <h2 class="section-title" data-translate="music_title">Musik Favoritku</h2>
+        <p class="section-sub" data-translate="music_sub">Playlist yang menemani hari-hariku 🎧</p>
+      </div>
+
+      <div class="music-cards-grid">
+
+        <!-- ═══ TRACK 1 ═══ -->
+        <div class="music-card" data-track="0"
+             data-src="files/AL NACER!.mp3"
+             data-title="AL NACER! Slowed Reverb"
+             data-artist="Sayfalse - Nulteex"
+             data-genre="Funk"
+             onclick="toggleFavoriteTrack(0)">
+          <div class="music-card-art">
+            <div class="vinyl-wrap" id="vinyl0">
+              <div class="vinyl-disc">
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-label" style="background-image:url('files/alnacer.jpg')"></div>
+                <div class="vinyl-shine"></div>
+              </div>
+            </div>
+            <div class="music-card-overlay">
+              <div class="music-card-play-btn" id="playBtn0">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="music-card-playing-waves" id="waves0">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="music-card-info">
+            <div class="music-genre-badge">Funk</div>
+            <h3 class="music-card-title">AL NACER!</h3>
+            <p class="music-card-artist">Sayfalse - Nulteex</p>
+          </div>
+        </div>
+
+        <!-- ═══ TRACK 2 ═══ -->
+        <div class="music-card" data-track="1"
+             data-src="files/NOAH - Separuh Aku (Official Audio).mp3"
+             data-title="NOAH - Separuh Aku (Official Audio)"
+             data-artist="NOAH"
+             data-genre="Pop Rock"
+             onclick="toggleFavoriteTrack(1)">
+          <div class="music-card-art">
+            <div class="vinyl-wrap" id="vinyl1">
+              <div class="vinyl-disc">
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-label" style="background-image:url('files/noah.jpg')"></div>
+                <div class="vinyl-shine"></div>
+              </div>
+            </div>
+            <div class="music-card-overlay">
+              <div class="music-card-play-btn" id="playBtn1">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="music-card-playing-waves" id="waves1">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="music-card-info">
+            <div class="music-genre-badge genre-lofi">Pop Rock</div>
+            <h3 class="music-card-title">NOAH - Separuh Aku (Official Audio)</h3>
+            <p class="music-card-artist">NOAH</p>
+          </div>
+        </div>
+
+        <!-- ═══ TRACK 3 ═══ -->
+        <div class="music-card" data-track="2"
+             data-src="files/Shane Filan - Beautiful In White (Official Video).mp3"
+             data-title="Filan - Beautiful In White (Official Video)"
+             data-artist="Shane Filan"
+             data-genre="Pop Romantic"
+             onclick="toggleFavoriteTrack(2)">
+          <div class="music-card-art">
+            <div class="vinyl-wrap" id="vinyl2">
+              <div class="vinyl-disc">
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-label" style="background-image:url('files/artworks-000092165076-tt9a84-t1080x1080.jpg')"></div>
+                <div class="vinyl-shine"></div>
+              </div>
+            </div>
+            <div class="music-card-overlay">
+              <div class="music-card-play-btn" id="playBtn2">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="music-card-playing-waves" id="waves2">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="music-card-info">
+            <div class="music-genre-badge genre-indie">Pop Romantic</div>
+            <h3 class="music-card-title">Shane Filan - Beautiful In White (Official Video)</h3>
+            <p class="music-card-artist">Shane Filan</p>
+          </div>
+        </div>
+
+      </div><!-- /music-cards-grid -->
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════════════════╗ -->
+  <!-- ║  MUSIC PLAY BAR (fixed bottom, Spotify-like) ║ -->
+  <!-- ╚══════════════════════════════════════════════╝ -->
+  <div class="music-playbar" id="musicPlaybar">
+    <div class="playbar-track-info">
+      <div class="playbar-art" id="playbarArt">
+        <span id="playbarArtIcon">🎵</span>
+      </div>
+      <div class="playbar-meta">
+        <span class="playbar-title" id="playbarTitle">—</span>
+        <span class="playbar-artist" id="playbarArtist">—</span>
+      </div>
+      <div class="playbar-genre" id="playbarGenre"></div>
+    </div>
+
+    <div class="playbar-controls">
+      <button class="playbar-btn" id="playbarPrevBtn" onclick="prevFavoriteTrack()" title="Sebelumnya">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="playbar-btn playbar-main" id="playbarPlayBtn" onclick="toggleFavoriteTrack(currentFavTrack)" title="Play/Pause">
+        <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="playbar-btn" id="playbarNextBtn" onclick="nextFavoriteTrack()" title="Berikutnya">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8l-5.5 4zM16 6h2v12h-2z"/></svg>
+      </button>
+    </div>
+
+    <div class="playbar-right">
+      <div class="playbar-progress-wrap">
+        <span class="playbar-time" id="playbarCurrentTime">0:00</span>
+        <div class="playbar-progress-bar" id="playbarProgressBar" onclick="seekFavoriteTrack(event)">
+          <div class="playbar-progress-fill" id="playbarProgressFill"></div>
+          <div class="playbar-progress-thumb" id="playbarProgressThumb"></div>
+        </div>
+        <span class="playbar-time" id="playbarDuration">0:00</span>
+      </div>
+      <button class="playbar-close-btn" onclick="stopFavoriteTrack()" title="Tutup">✕</button>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║      GAMING SECTION          ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="gaming" id="gaming">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="gaming_tag">// gaming_profile</span>
+        <h2 class="section-title" data-translate="gaming_title">Gaming Profile</h2>
+        <p class="section-sub" data-translate="gaming_sub">Mabar? 🎮</p>
+      </div>
+
+      <div class="gaming-grid">
+
+        <!-- ═══ MOBILE LEGENDS ═══ -->
+        <div class="game-card game-card-ml">
+          <div class="game-card-header">
+            <div class="game-logo-wrap game-logo-wrap-clean">
+              <!-- Ganti src dengan path logo ML kamu, contoh: src="files/logo-ml.png" -->
+              <img src="files/logo ml.jpg" alt="Mobile Legends Logo" class="game-logo-img" onerror="this.style.display='none'">
+            </div>
+            <div class="game-title-wrap">
+              <h3 class="game-name">Mobile Legends</h3>
+              <span class="game-tag" data-translate="game_ml_tag">Bang Bang</span>
+            </div>
+            <div class="game-status-dot"></div>
+          </div>
+
+          <div class="game-divider"></div>
+
+          <div class="game-stats-grid">
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_username">Username</span>
+              <span class="game-stat-value">lust in my mind.</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_highest">Highest Rank</span>
+              <span class="game-stat-value">
+                <span class="rank-badge rank-imo">IMO ✦ 108</span>
+              </span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_role">Role Favorit</span>
+              <span class="game-stat-value">Jungler🗡️</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_playstyle">Gaya Main</span>
+              <span class="game-stat-value" data-translate="game_playstyle_ml">Tergantung Mood 😄</span>
+            </div>
+          </div>
+
+          <div class="game-hero-showcase">
+            <div class="hero-card">
+              <div class="hero-icon hero-icon-gusion">
+                <!-- Ganti src dengan path foto hero Gusion kamu, contoh: src="files/gusion.png" -->
+                <img src="files/gusion.jpeg" alt="Gusion" class="hero-gusion-img" onerror="this.style.display='none'">
+              </div>
+              <div class="hero-info">
+                <span class="game-hero-name">Gusion</span>
+                <span class="game-hero-role" data-translate="game_hero_role">Assassin / Mage</span>
+              </div>
+              <div class="hero-mastery">
+                <span class="mastery-label" data-translate="game_mastery">Main</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ═══ ROBLOX ═══ -->
+        <div class="game-card game-card-roblox">
+          <div class="game-card-header">
+            <div class="game-logo-wrap game-logo-wrap-clean">
+              <!-- Ganti src dengan path logo Roblox kamu, contoh: src="files/logo-roblox.png" -->
+              <img src="files/roblox.jpg" alt="Roblox Logo" class="game-logo-img" onerror="this.style.display='none'">
+            </div>
+            <div class="game-title-wrap">
+              <h3 class="game-name">Roblox</h3>
+              <span class="game-tag" data-translate="game_roblox_tag">Casual Player</span>
+            </div>
+            <div class="game-status-dot"></div>
+          </div>
+
+          <div class="game-divider"></div>
+
+          <div class="game-stats-grid">
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_display">Display Name</span>
+              <span class="game-stat-value">tense</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_username">Username</span>
+              <span class="game-stat-value">@Wavz0YX</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_playstyle">Gaya Main</span>
+              <span class="game-stat-value" data-translate="game_playstyle_roblox">Casual 🎲</span>
+            </div>
+            <div class="game-stat">
+              <span class="game-stat-label" data-translate="game_stat_goal">Tujuan</span>
+              <span class="game-stat-value" data-translate="game_goal_roblox">Seru-seruan aja! 😄</span>
+            </div>
+          </div>
+
+          <a href="https://www.roblox.com/search/users?keyword=Wavz0YX" target="_blank" class="game-profile-btn" data-translate="game_profile_btn">
+            Lihat Profil Roblox →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║    PERIPHERAL SECTION        ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="peripheral" id="peripheral">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="peripheral_tag">// setup_saya</span>
+        <h2 class="section-title" data-translate="peripheral_title">My Setup</h2>
+        <p class="section-sub" data-translate="peripheral_sub">Gear yang menemani hari-hariku 🖥️</p>
+      </div>
+
+      <div class="peripheral-grid">
+
+        <div class="peripheral-card" data-delay="0">
+          <div class="peripheral-icon-wrap">
+            <span class="peripheral-icon">💻</span>
+          </div>
+          <div class="peripheral-info">
+            <span class="peripheral-category" data-translate="peripheral_cat_laptop">Laptop</span>
+            <h3 class="peripheral-name">HP Spectre x360</h3>
+            <p class="peripheral-spec">Intel Core i7-1255U</p>
+          </div>
+        </div>
+
+        <div class="peripheral-card" data-delay="80">
+          <div class="peripheral-icon-wrap">
+            <span class="peripheral-icon">📱</span>
+          </div>
+          <div class="peripheral-info">
+            <span class="peripheral-category" data-translate="peripheral_cat_phone">Handphone</span>
+            <h3 class="peripheral-name">Samsung Galaxy S24</h3>
+            <p class="peripheral-spec">8 GB / 256 GB</p>
+          </div>
+        </div>
+
+        <div class="peripheral-card" data-delay="160">
+          <div class="peripheral-icon-wrap">
+            <span class="peripheral-icon">⌨️</span>
+          </div>
+          <div class="peripheral-info">
+            <span class="peripheral-category" data-translate="peripheral_cat_keyboard">Keyboard</span>
+            <h3 class="peripheral-name">Gamen Titan V Lite</h3>
+            <p class="peripheral-spec">Mechanical Gaming</p>
+          </div>
+        </div>
+
+        <div class="peripheral-card" data-delay="240">
+          <div class="peripheral-icon-wrap">
+            <span class="peripheral-icon">🖱️</span>
+          </div>
+          <div class="peripheral-info">
+            <span class="peripheral-category" data-translate="peripheral_cat_mouse">Mouse</span>
+            <h3 class="peripheral-name">Furycube G1</h3>
+            <p class="peripheral-spec">Gaming Mouse</p>
+          </div>
+        </div>
+
+        <div class="peripheral-card" data-delay="320">
+          <div class="peripheral-icon-wrap">
+            <span class="peripheral-icon">🎧</span>
+          </div>
+          <div class="peripheral-info">
+            <span class="peripheral-category" data-translate="peripheral_cat_iem">IEM</span>
+            <h3 class="peripheral-name">KZ ZSN Pro</h3>
+            <p class="peripheral-spec">In-Ear Monitor</p>
+          </div>
+        </div>
+
+        <div class="peripheral-card" data-delay="400">
+          <div class="peripheral-icon-wrap">
+            <span class="peripheral-icon">🎙️</span>
+          </div>
+          <div class="peripheral-info">
+            <span class="peripheral-category" data-translate="peripheral_cat_mic">Microphone</span>
+            <h3 class="peripheral-name">MIXIO TL-18</h3>
+            <p class="peripheral-spec">Condenser Mic</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+    <!-- ╔══════════════════════════════╗ -->
+  <!-- ║      CONTACT SECTION         ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="contact_tag">// kontak</span>
+        <h2 class="section-title" data-translate="contact_title">Hubungi Aku</h2>
+        <p class="section-sub" data-translate="contact_sub">
+          Mau ngobrol, kolaborasi, atau sekadar say hi? Langsung aja! 👋
+        </p>
+      </div>
+
+      <div class="contact-grid">
+
+        <!-- Tombol Instagram -->
+        <!-- 
+          CARA GANTI LINK INSTAGRAM:
+          Ubah href="https://instagram.com/username_kamu" dengan username IG kamu
+          Ubah teks @username_kamu dengan username kamu
+        -->
+        <a href="https://instagram.com/zwithan" target="_blank" class="contact-card contact-ig">
+          <div class="contact-icon-wrap">
+            <!-- Icon Instagram (SVG custom biar lebih keren dari emoji) -->
+            <svg class="contact-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="contact-info">
+            <h3>Instagram</h3>
+            <!-- GANTI: username Instagram kamu -->
+            <p class="contact-handle">@zwithan</p>
+            <span class="contact-action" data-translate="contact_follow">Lihat Profil →</span>
+          </div>
+          <div class="contact-glow contact-glow-ig"></div>
+        </a>
+
+        <!-- Tombol WhatsApp -->
+        <!-- 
+          CARA GANTI LINK WHATSAPP:
+          Format: https://wa.me/62XXXXXXXXXXXX
+          62 = kode negara Indonesia
+          Contoh nomor 0812-3456-7890 → 6281234567890
+          Jadi: href="https://wa.me/6281234567890"
+          
+          Ganti juga teks +62 xxx-xxxx-xxxx dengan nomor kamu
+        -->
+        <a href="https://wa.me/6281285750725" target="_blank" class="contact-card contact-wa">
+          <div class="contact-icon-wrap">
+            <!-- Icon WhatsApp (SVG) -->
+            <svg class="contact-svg-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20.52 3.48A11.95 11.95 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.11.55 4.17 1.6 5.98L0 24l6.18-1.58C7.96 23.47 9.96 24 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.22-3.48-8.52zM12 22c-1.85 0-3.68-.5-5.28-1.44l-.38-.22-3.67.94.97-3.56-.25-.4C2.5 15.68 2 13.86 2 12 2 6.49 6.49 2 12 2s10 4.49 10 10-4.49 10-10 10zm5.47-7.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17c-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.41-1.49-.89-.79-1.49-1.77-1.67-2.07-.17-.3-.02-.47.13-.62.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51H7.5c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48c0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="contact-info">
+            <h3>WhatsApp</h3>
+            <!-- GANTI: nomor WhatsApp kamu -->
+            <p class="contact-handle">+62 812-8575-0725</p>
+            <span class="contact-action" data-translate="contact_chat">Chat Sekarang →</span>
+          </div>
+          <div class="contact-glow contact-glow-wa"></div>
+        </a>
+
+      </div>
+
+      <!-- Pesan penutup -->
+      <div class="contact-footer">
+        <p data-translate="contact_note">
+          Aku aktif di Instagram & WhatsApp. Respons biasanya dalam 1–24 jam ya! 😄
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════════╗ -->
+  <!-- ║      MEME OF THE MONTH SECTION      ║ -->
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  QUIZ SECTION                           ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <section class="quiz-section" id="quiz">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="quiz_tag">// quiz_challenge</span>
+        <h2 class="section-title" data-translate="quiz_title">Quiz Challenge</h2>
+        <p class="section-sub" data-translate="quiz_sub">Uji pengetahuanmu! Saingan sama pengunjung lain di leaderboard 🏆</p>
+      </div>
+
+      <div class="quiz-wrapper">
+        <!-- Panel Kiri: Quiz -->
+        <div class="quiz-main-card" id="quizMainCard">
+
+          <!-- Screen: Start -->
+          <div class="quiz-screen" id="quizScreenStart">
+            <div class="quiz-start-icon">🧠</div>
+            <h3 class="quiz-start-title" data-translate="quiz_start_title">Siap Mulai?</h3>
+            <p class="quiz-start-sub" data-translate="quiz_start_sub">10 soal campuran • Pengetahuan Umum, Teknologi & Matematika</p>
+            <div class="quiz-category-pills">
+              <span class="quiz-pill" data-translate="quiz_pill_umum">📚 Pengetahuan Umum</span>
+              <span class="quiz-pill" data-translate="quiz_pill_tekno">💻 Teknologi & IT</span>
+              <span class="quiz-pill" data-translate="quiz_pill_math">🔢 Matematika</span>
+            </div>
+            <div class="quiz-username-info" id="quizUsernameInfo">
+              <span class="quiz-user-label" data-translate="quiz_playing_as">Main sebagai:</span>
+              <span class="quiz-user-name" id="quizPlayerName">—</span>
+            </div>
+            <button class="quiz-start-btn" id="quizStartBtn" data-translate="quiz_start_btn">Mulai Quiz ⚡</button>
+          </div>
+
+          <!-- Screen: Question -->
+          <div class="quiz-screen" id="quizScreenQuestion" style="display:none">
+            <div class="quiz-top-bar">
+              <div class="quiz-progress-wrap">
+                <div class="quiz-progress-bar" id="quizProgressBar"></div>
+              </div>
+              <div class="quiz-top-info">
+                <span class="quiz-q-counter" id="quizQCounter">1 / 10</span>
+                <span class="quiz-score-live" id="quizScoreLive">⭐ 0</span>
+                <div class="quiz-timer-ring" id="quizTimerRing">
+                  <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--bg-3)" stroke-width="3"/><circle id="quizTimerCircle" cx="18" cy="18" r="15.9" fill="none" stroke="#facc15" stroke-width="3" stroke-dasharray="100 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg>
+                  <span id="quizTimerText">15</span>
+                </div>
+              </div>
+            </div>
+            <div class="quiz-category-badge" id="quizCatBadge">📚 Pengetahuan Umum</div>
+            <p class="quiz-question-text" id="quizQuestionText">Loading...</p>
+            <div class="quiz-options" id="quizOptions"></div>
+          </div>
+
+          <!-- Screen: Result -->
+          <div class="quiz-screen" id="quizScreenResult" style="display:none">
+            <div class="quiz-result-emoji" id="quizResultEmoji">🏆</div>
+            <h3 class="quiz-result-title" id="quizResultTitle">Luar Biasa!</h3>
+            <div class="quiz-result-score-wrap">
+              <span class="quiz-result-score" id="quizResultScore">0</span>
+              <span class="quiz-result-max">/ 100</span>
+            </div>
+            <p class="quiz-result-sub" id="quizResultSub">dari 10 soal</p>
+            <div class="quiz-result-stats" id="quizResultStats"></div>
+            <div class="quiz-result-rank" id="quizResultRank"></div>
+            <div class="quiz-result-btns">
+              <button class="quiz-btn-retry" id="quizRetryBtn" data-translate="quiz_retry_btn">🔄 Main Lagi</button>
+              <button class="quiz-btn-lb" id="quizGoLbBtn" data-translate="quiz_lb_btn">🏆 Leaderboard</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Panel Kanan: Leaderboard -->
+        <div class="quiz-lb-card" id="quizLbCard">
+          <div class="quiz-lb-header">
+            <span class="quiz-lb-title">🏆 Leaderboard</span>
+            <button class="quiz-lb-refresh" id="quizLbRefresh" title="Refresh">↻</button>
+          </div>
+          <div class="quiz-lb-countdown">
+            <span class="quiz-lb-countdown-label" data-translate="quiz_reset_label">🔄 Reset dalam:</span>
+            <span class="quiz-lb-countdown-timer" id="quizCountdown">—</span>
+          </div>
+          <div class="quiz-lb-list" id="quizLbList">
+            <div class="quiz-lb-loading" data-translate="quiz_lb_loading_text">Memuat...</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="meme-month" id="meme">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="meme_tag">// meme_of_the_month</span>
+        <h2 class="section-title" data-translate="meme_title">Meme of the Month</h2>
+        <p class="section-sub" data-translate="meme_sub">Meme pilihan bulan ini 😂</p>
+      </div>
+      <div class="meme-video-wrap">
+        <video
+          class="meme-video"
+          id="memeVideo"
+          src="files/memeyahudi.mp4"
+          playsinline
+          preload="metadata"
+        ></video>
+        <div class="meme-play-btn" id="memePlayBtn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ║      BULLETIN BOARD SECTION      ║ -->
+  <!-- ╚══════════════════════════════════╝ -->
+  <section class="bulletin" id="bulletin">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-translate="bulletin_tag">// papan_pesan</span>
+        <h2 class="section-title" data-translate="bulletin_title">Papan Pesan</h2>
+        <p class="section-sub" data-translate="bulletin_sub">Tinggalin pesan buat aku yuk! Aku pasti baca semuanya 📌</p>
+      </div>
+
+      <!-- Form kirim pesan -->
+      <div class="bulletin-form-wrap">
+        <div class="bulletin-form-card">
+          <div class="bulletin-form-header">
+            <span class="bulletin-pin">📌</span>
+            <span data-translate="bulletin_form_title">Tulis Pesanmu</span>
+          </div>
+
+          <!-- Username chip — ditampilkan di atas form -->
+          <div class="blt-user-chip-row" id="bltUserChipRow">
+            <div class="blt-user-chip" id="bltUserChip">
+              <span class="blt-user-chip-avatar" id="bltUserChipAvatar">?</span>
+              <span class="blt-user-chip-name" id="bltUserChipName">—</span>
+            </div>
+            <div class="blt-chip-actions">
+            <button class="blt-change-uname-btn" id="bltChangeUnameBtn" title="Ganti Username">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round" width="13" height="13">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              <span id="bltChangeUnameBtnLabel">Ganti</span>
+            </button>
+            <button class="blt-delete-account-btn" id="bltDeleteAccountBtn" title="Hapus Akun">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round" width="13" height="13">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+              <span>Hapus Akun</span>
+            </button>
+            </div>
+          </div>
+
+          <!-- Hidden input — masih dipakai JS untuk ambil nilai nama -->
+          <input type="hidden" id="bulletinName" />
+
+          <div class="bulletin-field">
+            <label class="bulletin-label" data-translate="bulletin_msg_label">Pesan</label>
+            <textarea
+              id="bulletinMsg"
+              class="bulletin-textarea"
+              maxlength="300"
+              rows="3"
+              placeholder="Tulis pesanmu di sini... (maks. 300 karakter)"
+            ></textarea>
+            <span class="bulletin-charcount"><span id="bulletinCharCount">0</span>/300</span>
+          </div>
+          <button class="bulletin-submit" id="bulletinSubmit" data-translate="bulletin_send">Kirim Pesan 📨</button>
+          <p class="bulletin-status" id="bulletinStatus"></p>
+        </div>
+      </div>
+
+      <!-- Daftar pesan -->
+      <div class="bulletin-board" id="bulletinBoard">
+        <div class="bulletin-board-topbar">
+          <span class="bulletin-board-count" id="bulletinCount"></span>
+          <button class="bulletin-clear-all-btn" id="bulletinClearAll" style="display:none" title="Reset pesanmu dari papan ini">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+            Reset Pesanku
+          </button>
+        </div>
+        <div class="bulletin-loading" id="bulletinLoading">
+          <span class="bulletin-spinner"></span>
+          <span data-translate="bulletin_loading">Memuat pesan...</span>
+        </div>
+        <div class="bulletin-empty" id="bulletinEmpty" style="display:none">
+          <span>📭</span>
+          <p data-translate="bulletin_empty">Belum ada pesan. Jadilah yang pertama!</p>
+        </div>
+        <div class="bulletin-list" id="bulletinList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║          FOOTER              ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p data-translate="footer_made">Dibuat dengan ❤️ + ☕ + banyak trial & error</p>
+      <!-- Tahun otomatis diisi oleh JavaScript (lihat di script.js) -->
+      <p><span id="footerYear"></span> · <span data-translate="footer_copy">Semua konten milik penulis</span></p>
+    </div>
+  </footer>
+
+  <!-- Menghubungkan file JavaScript kita -->
+  <!-- PENTING: Letaknya di bawah semua HTML supaya browser sudah "kenal" semua elemen sebelum JS jalan -->
+  <!-- Now Playing Toast — waveform reveal animation -->
+  <div class="now-playing-toast" id="nowPlayingToast">
+    <div class="toast-glow-bar"></div>
+    <div class="toast-vinyl">
+      <div class="toast-vinyl-disc" id="toastVinylDisc">
+        <div class="toast-vinyl-label" id="toastVinylLabel"></div>
+      </div>
+    </div>
+    <div class="toast-info">
+      <div class="toast-tag-row">
+        <span class="toast-equalizer">
+          <i></i><i></i><i></i><i></i>
+        </span>
+        <span class="toast-tag">Now Playing</span>
+      </div>
+      <span class="toast-title" id="toastTitle"></span>
+      <span class="toast-artist" id="toastArtist"></span>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  VOLUME BOTTOM SHEET (mobile)           ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="vp-vol-sheet-backdrop" id="vpVolBackdrop" onclick="closeVolSheet()"></div>
+  <div class="vp-vol-sheet" id="vpVolSheet">
+    <div class="vp-vol-sheet-handle"></div>
+    <div class="vp-vol-sheet-header">
+      <span class="vp-vol-sheet-icon" id="vpVolSheetIcon">🔊</span>
+      <span class="vp-vol-sheet-title">Volume Video</span>
+      <span class="vp-vol-sheet-pct" id="vpVolSheetPct">100%</span>
+    </div>
+    <div class="vp-vol-sheet-track-wrap">
+      <span class="vp-vol-sheet-side-label">🔇</span>
+      <div class="vp-vol-sheet-track" id="vpVolSheetTrack">
+        <div class="vp-vol-sheet-fill" id="vpVolSheetFill"></div>
+        <div class="vp-vol-sheet-thumb" id="vpVolSheetThumb"></div>
+      </div>
+      <span class="vp-vol-sheet-side-label">🔊</span>
+    </div>
+    <div class="vp-vol-presets">
+      <button class="vp-vol-preset-btn" onclick="setVolPreset(0)">🔇<span>Mute</span></button>
+      <button class="vp-vol-preset-btn" onclick="setVolPreset(0.25)">🔈<span>25%</span></button>
+      <button class="vp-vol-preset-btn" onclick="setVolPreset(0.5)">🔉<span>50%</span></button>
+      <button class="vp-vol-preset-btn" onclick="setVolPreset(0.75)">🔊<span>75%</span></button>
+      <button class="vp-vol-preset-btn" onclick="setVolPreset(1)">📢<span>Max</span></button>
+    </div>
+    <button class="vp-vol-sheet-close" onclick="closeVolSheet()">Selesai</button>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  CUSTOM CONFIRM / ALERT MODAL           ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="zanpw-modal-backdrop" id="zanpwModalBackdrop">
+    <div class="zanpw-modal" id="zanpwModal">
+      <div class="zanpw-modal-icon-wrap" id="zanpwModalIconWrap">
+        <span class="zanpw-modal-icon" id="zanpwModalIcon">🗑️</span>
+        <div class="zanpw-modal-icon-ring"></div>
+      </div>
+      <h3 class="zanpw-modal-title" id="zanpwModalTitle">Hapus Pesan?</h3>
+      <p class="zanpw-modal-desc" id="zanpwModalDesc">Tindakan ini tidak bisa dibatalkan.</p>
+      <div class="zanpw-modal-btns" id="zanpwModalBtns">
+        <button class="zanpw-modal-btn zanpw-btn-cancel" id="zanpwModalCancel">Batal</button>
+        <button class="zanpw-modal-btn zanpw-btn-confirm" id="zanpwModalConfirm">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  USERNAME LOGIN POPUP                   ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <div class="uname-overlay" id="unameOverlay">
+    <div class="uname-modal" id="unameModal">
+      <!-- X close button — muncul di first visit (skip username) dan saat ganti username -->
+      <button class="uname-close-btn" id="unameCloseBtn" style="display:none" title="Tutup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <div class="uname-wave" id="unameWaveEmoji">👋</div>
+      <h2 class="uname-title" id="unameModalTitle">Hai, siapa namamu?</h2>
+      <p class="uname-sub" id="unameModalSub">Username-mu akan muncul saat kamu kirim pesan di papan pesan!</p>
+      <div class="uname-input-wrap">
+        <input type="text" id="unameInput" class="uname-input" maxlength="30"
+          placeholder="Masukkan username..." autocomplete="off" spellcheck="false" />
+      </div>
+      <button class="uname-btn" id="unameBtn">
+        <span id="unameBtnLabel">Lanjut Masuk</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+      <p class="uname-note" id="unameNote"></p>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  ENTRY OVERLAY BACK BUTTON (X)          ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+  <!-- Injected by JS only when needed -->
+
+  <!-- ╔══════════════════════════════════════════╗ -->
+  <!-- ║  ONLINE USERS FLOATING WIDGET           ║ -->
+  <!-- ╚══════════════════════════════════════════╝ -->
+
+
+  <script src="script.js"></script>
+</body>
+</html>
